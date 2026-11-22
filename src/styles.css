@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+.hero-banner {
+  background: linear-gradient(105deg, #134678 0%, #17528c 55%, #1c5e9e 100%);
+  position: relative;
+  overflow: hidden;
+}
