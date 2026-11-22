@@ -42,7 +42,8 @@ const DEFAULT_TRANSACTIONS: SharedTransaction[] = [
   { id: 'tx-102', date: '2026-11-12', title: 'Sewa & Kebutuhan Apartemen', note: 'Bulanan', category: 'Home', subject: 'Bersama', type: 'Expense', amount: 2500000 },
   { id: 'tx-103', date: '2026-11-11', title: 'Tabungan Dana Darurat Bersama', note: 'Auto-debit', category: 'Investment', subject: 'Bersama', type: 'Savings', amount: 8101990 },
   { id: 'tx-104', date: '2026-11-10', title: 'Groceries & Makan Malam', note: 'Supermarket', category: 'Food', subject: 'Jessica', type: 'Expense', amount: 1339050 },
-  { id: 'tx-105', date: '2026-11-08', title: 'Kado Ulang Tahun Keluarga', note: 'Unspecified', category: 'Gifts', subject: 'Ivan', type: 'Expense', amount: 1140150 }
+  { id: 'tx-105', date: '2026-11-08', title: 'Kado Ulang Tahun Keluarga', note: 'Unspecified', category: 'Gifts', subject: 'Ivan', type: 'Expense', amount: 1140150 },
+  { id: 'tx-106', date: '2026-11-06', title: 'BBM, Tol & Parkir', note: 'Operasional', category: 'Transportation', subject: 'Ivan', type: 'Expense', amount: 433500 }
 ];
 
 export default function App() {
@@ -202,7 +203,7 @@ export default function App() {
     } else {
       showToast('Transaksi berhasil dihapus dari cloud.');
       const { data } = await supabase.from('shared_transactions').select('*').order('date', { ascending: false });
-      if (data) setTransactions(data as SharedTransaction[]);
+      if (data && data.length > 0) setTransactions(data as SharedTransaction[]);
     }
   };
 
@@ -214,6 +215,126 @@ export default function App() {
           <span>{toastMessage}</span>
         </div>
       )}
+
+      {/* Sidebar Nav */}
+      <aside className="w-full lg:w-64 bg-white border-b lg:border-b-0 lg:border-r border-slate-200/80 p-4 flex flex-col justify-between shrink-0">
+        <div className="space-y-5">
+          <div className="flex items-center gap-3 px-1 pt-1">
+            <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100">
+              <Wallet className="w-5 h-5" />
+            </div>
+            <div>
+              <h1 className="font-bold text-slate-900 text-sm">Finance Tracker</h1>
+              <p className="text-[10px] font-semibold tracking-widest text-slate-400 uppercase">IVAN & JESSICA</p>
+            </div>
+          </div>
+
+          <div className="bg-slate-50 border border-slate-200/80 rounded-2xl p-3 flex items-center gap-3">
+            <div className="flex -space-x-1.5">
+              <span className="w-7 h-7 rounded-full bg-blue-100 text-blue-700 font-bold text-xs flex items-center justify-center ring-2 ring-white">I</span>
+              <span className="w-7 h-7 rounded-full bg-rose-100 text-rose-600 font-bold text-xs flex items-center justify-center ring-2 ring-white">J</span>
+            </div>
+            <div>
+              <div className="text-xs font-semibold text-slate-800">Shared space</div>
+              <div className="text-[11px] font-medium text-emerald-600">Supabase Realtime</div>
+            </div>
+          </div>
+
+          <nav className="space-y-1">
+            {[
+              { id: 'dashboard', label: 'Dashboard', icon: LayoutGrid },
+              { id: 'transactions', label: 'Transactions', icon: Activity },
+              { id: 'reports', label: 'Reports', icon: BarChart2 },
+              { id: 'settings', label: 'Settings', icon: Settings }
+            ].map((item) => {
+              const Icon = item.icon;
+              const active = activePage === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => setActivePage(item.id as any)}
+                  className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors ${
+                    active ? 'bg-blue-50 text-blue-600 font-semibold' : 'text-slate-500 hover:bg-slate-50'
+                  }`}
+                >
+                  <Icon className="w-4 h-4" />
+                  <span>{item.label}</span>
+                </button>
+              );
+            })}
+          </nav>
+        </div>
+
+        <div className="px-2 py-2 text-xs text-emerald-600 font-medium flex items-center gap-2">
+          <CheckCircle2 className="w-4 h-4" />
+          <span>Terhubung ke Cloud</span>
+        </div>
+      </aside>
+
+      {/* Main Content */}
+      <main className="flex-1 px-4 sm:px-8 py-6 max-w-7xl mx-auto w-full space-y-6">
+        <div className="flex items-center justify-between">
+          <h2 className="text-2xl font-bold text-slate-900 capitalize">{activePage}</h2>
+          <select
+            value={selectedMonth}
+            onChange={(e) => setSelectedMonth(e.target.value)}
+            className="bg-white border border-slate-200 rounded-xl px-3 py-2 text-sm font-medium text-slate-700"
+          >
+            <option value="2026-11">November 2026</option>
+            <option value="2026-12">Desember 2026</option>
+          </select>
+        </div>
+
+        {activePage === 'dashboard' && (
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+              <div className="bg-white rounded-2xl border border-slate-200 p-5">
+                <p className="text-xs text-slate-400 font-medium">Total Pemasukan</p>
+                <p className="text-xl font-bold text-slate-900 mt-1">{formatIDR(metrics.income)}</p>
+              </div>
+              <div className="bg-white rounded-2xl border border-slate-200 p-5">
+                <p className="text-xs text-slate-400 font-medium">Pengeluaran</p>
+                <p className="text-xl font-bold text-slate-900 mt-1">{formatIDR(metrics.expense)}</p>
+              </div>
+              <div className="bg-white rounded-2xl border border-slate-200 p-5">
+                <p className="text-xs text-slate-400 font-medium">Tabungan</p>
+                <p className="text-xl font-bold text-slate-900 mt-1">{formatIDR(metrics.savings)}</p>
+              </div>
+              <div className="bg-white rounded-2xl border border-slate-200 p-5">
+                <p className="text-xs text-slate-400 font-medium">Transfer</p>
+                <p className="text-xl font-bold text-slate-900 mt-1">{formatIDR(metrics.transfer)}</p>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-2xl border border-slate-200 p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-bold text-slate-900">Transaksi Terbaru</h3>
+                <button onClick={() => openModal('Expense')} className="px-3.5 py-2 bg-blue-600 text-white rounded-xl text-xs font-semibold">
+                  + Tambah Transaksi
+                </button>
+              </div>
+              <div className="space-y-3">
+                {periodTransactions.length === 0 ? (
+                  <p className="text-sm text-slate-400 py-6 text-center">Belum ada transaksi pada periode ini.</p>
+                ) : (
+                  periodTransactions.map((tx) => (
+                    <div key={tx.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
+                      <div>
+                        <p className="text-sm font-semibold text-slate-800">{tx.title}</p>
+                        <p className="text-xs text-slate-400">{tx.date} • {tx.subject} • {tx.category}</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-sm font-bold text-slate-900">{formatIDR(tx.amount)}</p>
+                        <span className="text-[10px] px-2 py-0.5 bg-blue-50 text-blue-600 rounded-full font-medium">{tx.type}</span>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+      </main>
     </div>
   );
 }
