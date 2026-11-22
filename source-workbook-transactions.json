@@ -1,0 +1,92 @@
+[
+  {
+    "id": "tx-101",
+    "date": "2026-11-13",
+    "title": "traktiran ayah",
+    "note": "Unspecified",
+    "category": "Other",
+    "subject": "Ivan",
+    "type": "Income",
+    "amount": 800000
+  },
+  {
+    "id": "tx-102",
+    "date": "2026-11-12",
+    "title": "Sewa & Kebutuhan Apartemen",
+    "note": "Bulanan",
+    "category": "Home",
+    "subject": "Bersama",
+    "type": "Expense",
+    "amount": 2500000
+  },
+  {
+    "id": "tx-103",
+    "date": "2026-11-11",
+    "title": "Tabungan Dana Darurat Bersama",
+    "note": "Auto-debit",
+    "category": "Investment",
+    "subject": "Bersama",
+    "type": "Savings",
+    "amount": 8101990
+  },
+  {
+    "id": "tx-104",
+    "date": "2026-11-10",
+    "title": "Groceries & Makan Malam",
+    "note": "Supermarket",
+    "category": "Food",
+    "subject": "Jessica",
+    "type": "Expense",
+    "amount": 1339050
+  },
+  {
+    "id": "tx-105",
+    "date": "2026-11-08",
+    "title": "Kado Ulang Tahun Keluarga",
+    "note": "Unspecified",
+    "category": "Gifts",
+    "subject": "Ivan",
+    "type": "Expense",
+    "amount": 1140150
+  },
+  {
+    "id": "tx-106",
+    "date": "2026-11-06",
+    "title": "BBM, Tol & Parkir",
+    "note": "Operasional",
+    "category": "Transportation",
+    "subject": "Ivan",
+    "type": "Expense",
+    "amount": 433500
+  },
+  {
+    "id": "tx-107",
+    "date": "2026-11-04",
+    "title": "Listrik, Air & Internet",
+    "note": "Tagihan rutin",
+    "category": "Utilities",
+    "subject": "Bersama",
+    "type": "Expense",
+    "amount": 408949
+  },
+  {
+    "id": "tx-108",
+    "date": "2026-11-03",
+    "title": "Nonton Bioskop & Kopi",
+    "note": "Weekend",
+    "category": "For Fun",
+    "subject": "Jessica",
+    "type": "Expense",
+    "amount": 187000
+  },
+  {
+    "id": "tx-109",
+    "date": "2026-11-02",
+    "title": "Perawatan & Keperluan Pribadi",
+    "note": "Unspecified",
+    "category": "Personal",
+    "subject": "Jessica",
+    "type": "Expense",
+    "amount": 145000
+  }
+]
